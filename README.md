@@ -1,2 +1,2 @@
 # audio-prep
-A module developed to segment meaningful-spoken part of a audio signal
+A module developed to segment meaningful-spoken part of an audio signal
