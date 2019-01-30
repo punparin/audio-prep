@@ -141,27 +141,3 @@ class PreProcessing:
             new_signal = self.combineSignal(new_signal)
 
         return sample_rate, np.array(new_signal)
-
-    def getAllProcess(self, file_name, threshold):
-        sample_rate, sig = wavfile.read(file_name)
-        window_size = self.get_window_size(file_name)
-
-        # Pre-processing
-        new_signal = self.npToList(sig)
-        zero_signal = self.zero_mean(new_signal)
-        normal_signal = self.normalization(zero_signal)
-        fixed_signal = self.autoFixedLength(normal_signal)
-
-        # Segmentation
-        power_signal = self.power(fixed_signal)
-        window_signal = self.windowBasedSD(power_signal)
-        senmented_signal = self.speechSegmentation(window_signal, threshold)
-        non_error_signal = self.removeErrors(senmented_signal)
-
-        # Reconstruction
-        recon_signal = self.speechReconstruction(fixed_signal, non_error_signal)
-
-        combine_signal = self.combineSignal(recon_signal)
-
-        signal = [sig, zero_signal, normal_signal, fixed_signal, power_signal, window_signal, senmented_signal, non_error_signal, recon_signal, combine_signal]
-        return sample_rate, [np.array(s) for s in signal]
